@@ -4,7 +4,7 @@ vlan {{vlan.id}}
 {% endfor %}
 
 {% if userdatavlan_interfaces is defined %}
-{% for interface in wap_trunk_interfaces %}
+{% for interface in userdatavlan_interfaces %}
 interface {{interface.name}}
   description {{interface.description}}
   switchport
