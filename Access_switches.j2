@@ -1,0 +1,20 @@
+{% for vlan in vlans %}
+vlan {{vlan.id}}
+ name {{vlan.name}}
+{% endfor %}
+
+{% if wap_trunk_interfaces is defined %}
+{% for interface in wap_trunk_interfaces %}
+interface {{interface.name}}
+  description {{interface.description}}
+  switchport trunk encapsulation dot1q
+  switchport mode trunk
+  switchport trunk allowed vlan add {{interface.mgmt_pvid}}
+  switchport trunk allowed vlan add {{interface.wvid}}
+  switchport trunk allowed vlan add {{interface.gvid}}
+  switchport trunk native vlan {{interface.mgmt_pvid}}
+  load-interval 30
+  spanning-tree portfast edge trunk
+  ip dhcp snooping limit rate 100
+{% endfor %}
+{% endif %}
