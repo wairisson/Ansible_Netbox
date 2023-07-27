@@ -3,6 +3,31 @@ vlan {{vlan.id}}
  name {{vlan.name}}
 {% endfor %}
 
+{% if userdatavlan_interfaces is defined %}
+{% for interface in wap_trunk_interfaces %}
+interface {{interface.name}}
+  description {{interface.description}}
+  switchport
+  switchport mode access
+  switchport access vlan {{interface.pvid}}
+  load-interval 30
+  ip dhcp snooping limit rate 10
+  storm-control broadcast level 20
+  storm-control multicast level 20
+  storm-control broadcast include multicast
+  storm-control action shutdown
+  storm-control action trap
+  spanning-tree portfast
+  switchport port-security
+  switchport port-security maximum 3
+  switchport port-security aging time 2
+  switchport port-security aging type inactivity
+  switchport port-security violation restrict
+  spanning-tree bpduguard enable
+{% endfor %}
+{% endif %}
+
+
 {% if wap_trunk_interfaces is defined %}
 {% for interface in wap_trunk_interfaces %}
 interface {{interface.name}}
